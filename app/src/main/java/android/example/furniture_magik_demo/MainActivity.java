@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.example.furniture_magik_demo.Login.LoginActivity;
 import android.example.furniture_magik_demo.utils.SharedPref_Util;
 import android.os.Bundle;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     Toolbar toolbar;
+    FloatingActionButton actionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +26,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Welcome ");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        actionButton = findViewById(R.id.floatingActionButton);
+        actionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,AddItem.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

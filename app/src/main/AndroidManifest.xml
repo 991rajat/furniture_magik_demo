@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".AddItem"></activity>
+        <activity android:name=".AddItem"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".Login.OtpVerification" />
         <activity android:name=".Login.LoginActivity"></activity>
         <activity android:name=".MainActivity">
