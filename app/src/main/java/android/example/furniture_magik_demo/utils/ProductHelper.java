@@ -78,7 +78,5 @@ public class ProductHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE  "+TABLE_NAME+" SET name ='"+ updatedProduct.getName() + "', type ='" + updatedProduct.getType()+ "', price ='"+ updatedProduct.getPrice() + "', discount_price ='"+ updatedProduct.getDiscount_price() + "', image ='"+ updatedProduct.getImage() + "'  WHERE _id='" + personId + "'");
         Toast.makeText(context, "Updated successfully.", Toast.LENGTH_SHORT).show();
-
-
     }
 }
