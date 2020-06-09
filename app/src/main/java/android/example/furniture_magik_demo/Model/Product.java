@@ -7,12 +7,13 @@ public class Product {
     private float price;
     private String image;
 
-    public Product(String name, String type, float price, String image, float discount_price) {
+    public Product(String name, String type, float price, float discount_price, String image) {
         this.name = name;
         this.type = type;
         this.price = price;
-        this.image = image;
+
         this.discount_price = discount_price;
+        this.image = image;
     }
 
     public long getId() {

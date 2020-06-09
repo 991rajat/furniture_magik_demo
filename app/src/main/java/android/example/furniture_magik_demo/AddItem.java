@@ -9,9 +9,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.example.furniture_magik_demo.Model.Product;
+import android.example.furniture_magik_demo.utils.ProductHelper;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -27,13 +32,17 @@ import java.util.List;
 
 public class AddItem extends AppCompatActivity {
 
+    private static final String TAG = ">>>>>>>>>>";
     Toolbar toolbar;
     EditText name,price,discountprice;
     Spinner type;
     Button back,submit;
-    Uri mCropImageUri;
     ImageView imageView;
+    boolean image_selected = false;
     private static final int PERMISSION_CODE = 101;
+    private String image_path;
+    ProductHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,39 +105,66 @@ public class AddItem extends AppCompatActivity {
 
     void saveProduct()
     {
+        String p_name = name.getText().toString().trim();
+        String p_type = type.getSelectedItem().toString();
+        Float p_price = Float.parseFloat(price.getText().toString().trim());
+        Float p_discount = Float.parseFloat(discountprice.getText().toString().trim());
+        dbHelper = new ProductHelper(this);
 
-    }
+        if(p_name.isEmpty()){
+            //error name is empty
+            Toast.makeText(this, "Enter product name", Toast.LENGTH_SHORT).show();
+        }
 
-    private void startCropImageActivity() {
-        CropImage.activity()
-                .start(this);
-    }
+        if(p_type.isEmpty()){
+            //error name is empty
+            Toast.makeText(this, "Select type", Toast.LENGTH_SHORT).show();
+        }
 
-    @Override
-    @SuppressLint("NewApi")
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // handle result of pick image chooser
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+        if(price.getText().toString().trim().isEmpty()){
+            //error name is empty
+            Toast.makeText(this, "Please product price", Toast.LENGTH_SHORT).show();
+        }
 
-            // For API >= 23 we need to check specifically that we have permissions to read external storage.
-            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
-                // request permissions and handle the result in onRequestPermissionsResult()
-                mCropImageUri = imageUri;
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},   CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE);
-            } else {
-                // no permissions required or already granted, can start crop image activity
-                startCropImageActivity(imageUri);
-            }
+        if(discountprice.getText().toString().trim().isEmpty()){
+            //error name is empty
+            Toast.makeText(this, "Enter product discount price", Toast.LENGTH_SHORT).show();
+        }
+
+        if(!image_selected)
+            image_path="";
+        //create new person
+        Product product = new Product(p_name, p_type, p_price, p_discount,image_path);
+        boolean success = dbHelper.saveNewProduct(product,AddItem.this);
+        if(success) {
+            image_selected = false;
+            name.setText("");
+            price.setText("");
+            discountprice.setText("");
         }
     }
 
-    private void startCropImageActivity(Uri imageUri) {
-        CropImage.activity(imageUri)
-                .start(this);
+    private void startCropImageActivity() {
+        CropImage.activity().start(this);
     }
 
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Log.d(TAG, "onActivityResult: "+resultUri.getPath());
+                image_path = resultUri.getPath();
+                image_selected = true;
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(this, "Error Try Again!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -137,14 +173,6 @@ public class AddItem extends AppCompatActivity {
                 Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        }
-        if (requestCode == CropImage.PICK_IMAGE_PERMISSIONS_REQUEST_CODE) {
-            if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // required permissions granted, start crop image activity
-                startCropImageActivity(mCropImageUri);
-            } else {
-                Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
             }
         }
     }

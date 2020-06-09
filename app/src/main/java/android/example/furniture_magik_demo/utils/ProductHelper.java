@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.example.furniture_magik_demo.Model.Product;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class ProductHelper extends SQLiteOpenHelper {
@@ -45,7 +44,7 @@ public class ProductHelper extends SQLiteOpenHelper {
         this.onCreate(sqLiteDatabase);
     }
 
-    public void saveNewProduct(Product product,Context context) {
+    public boolean saveNewProduct(Product product, Context context) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -56,14 +55,17 @@ public class ProductHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PRODUCT_IMAGE,product.getImage());
 
         long result = db.insert(TABLE_NAME,null, values);
+        db.close();
         if(result!=-1)
         {
             Toast.makeText(context, "Inserted Successfully.", Toast.LENGTH_SHORT).show();
+            return true;
         }
         else {
             Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
-        db.close();
+
+        return false;
     }
 
     public void deleteProductRecord(long id, Context context) {
