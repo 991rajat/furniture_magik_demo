@@ -11,9 +11,12 @@ public class Product {
         this.name = name;
         this.type = type;
         this.price = price;
-
         this.discount_price = discount_price;
         this.image = image;
+    }
+
+    public Product() {
+
     }
 
     public long getId() {

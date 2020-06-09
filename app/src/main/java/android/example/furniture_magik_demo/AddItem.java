@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -42,6 +43,7 @@ public class AddItem extends AppCompatActivity {
     private static final int PERMISSION_CODE = 101;
     private String image_path;
     ProductHelper dbHelper;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class AddItem extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setViews();
         setUpSPinner();
+        progressDialog = new ProgressDialog(AddItem.this);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +80,22 @@ public class AddItem extends AppCompatActivity {
                     startCropImageActivity();
                 }
 
+            }
+        });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                saveProduct();
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddItem.this,MainActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -110,38 +129,49 @@ public class AddItem extends AppCompatActivity {
         Float p_price = Float.parseFloat(price.getText().toString().trim());
         Float p_discount = Float.parseFloat(discountprice.getText().toString().trim());
         dbHelper = new ProductHelper(this);
-
+        boolean allOk = true;
         if(p_name.isEmpty()){
             //error name is empty
             Toast.makeText(this, "Enter product name", Toast.LENGTH_SHORT).show();
+            allOk = false;
         }
 
         if(p_type.isEmpty()){
             //error name is empty
             Toast.makeText(this, "Select type", Toast.LENGTH_SHORT).show();
+            allOk = false;
         }
 
         if(price.getText().toString().trim().isEmpty()){
             //error name is empty
             Toast.makeText(this, "Please product price", Toast.LENGTH_SHORT).show();
+            allOk = false;
+
         }
 
         if(discountprice.getText().toString().trim().isEmpty()){
             //error name is empty
             Toast.makeText(this, "Enter product discount price", Toast.LENGTH_SHORT).show();
+            allOk = false;
         }
 
         if(!image_selected)
             image_path="";
+
+        if(!allOk)
+            return ;
         //create new person
+        progressBarSet("Saving Data");
         Product product = new Product(p_name, p_type, p_price, p_discount,image_path);
         boolean success = dbHelper.saveNewProduct(product,AddItem.this);
+        progressBarUnset();
         if(success) {
             image_selected = false;
             name.setText("");
             price.setText("");
             discountprice.setText("");
         }
+
     }
 
     private void startCropImageActivity() {
@@ -175,5 +205,17 @@ public class AddItem extends AppCompatActivity {
                 Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    void progressBarSet(String message)
+    {
+        progressDialog.setTitle("message");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    void progressBarUnset()
+    {
+        progressDialog.dismiss();
     }
 }

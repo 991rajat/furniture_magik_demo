@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.example.furniture_magik_demo.Adapters.ProductAdapter;
 import android.example.furniture_magik_demo.Login.LoginActivity;
 import android.example.furniture_magik_demo.Model.Product;
 import android.example.furniture_magik_demo.utils.ProductHelper;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton actionButton;
     RecyclerView recyclerView;
     ProductHelper dbHelper;
+    ProductAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void populaterecyclerView() {
         dbHelper = new ProductHelper(this);
-        adapter = new ProductAdapter(dbHelper.productList(), this, mRecyclerView);
+        adapter = new ProductAdapter(dbHelper.productList(), this, recyclerView);
         recyclerView.setAdapter(adapter);
     }
 

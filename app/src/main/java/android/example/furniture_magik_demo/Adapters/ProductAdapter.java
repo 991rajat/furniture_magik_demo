@@ -48,7 +48,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.price.setText("Rs."+String.valueOf(product.getPrice()));
         holder.discount.setText("Rs."+String.valueOf(product.getDiscount_price()));
         holder.discount.setPaintFlags(holder.discount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        Picasso.get().load(product.getImage()).placeholder(R.drawable.noproduct).into(holder.image);
+        if(!product.getName().equals(""))
+            Picasso.get().load(product.getImage()).placeholder(R.drawable.noproduct).into(holder.image);
+        else
+            holder.image.setImageDrawable(mContext.getDrawable(R.drawable.noproduct));
     }
 
     @Override

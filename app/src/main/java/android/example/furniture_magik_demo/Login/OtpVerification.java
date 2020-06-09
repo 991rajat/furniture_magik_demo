@@ -155,18 +155,7 @@ public class OtpVerification extends AppCompatActivity {
         }
     }
 
-    void progressBarSet(String message)
-    {
-        progressDialog.setTitle("OTP verification");
-        progressDialog.setMessage(message);
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
 
-    void progressBarUnset()
-    {
-        progressDialog.dismiss();
-    }
 
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
@@ -202,6 +191,18 @@ public class OtpVerification extends AppCompatActivity {
         Intent intent = new Intent(OtpVerification.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+    void progressBarSet(String message)
+    {
+        progressDialog.setTitle("OTP verification");
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    void progressBarUnset()
+    {
+        progressDialog.dismiss();
     }
 
 }
