@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -16,6 +18,7 @@ public class AddItem extends AppCompatActivity {
     Toolbar toolbar;
     EditText name,price,discountprice;
     Spinner type;
+    Button back,submit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,13 @@ public class AddItem extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setViews();
         setUpSPinner();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     void setViews(){
@@ -33,6 +43,8 @@ public class AddItem extends AppCompatActivity {
         price = findViewById(R.id.add_item_price);
         discountprice = findViewById(R.id.add_item_discount);
         type = findViewById(R.id.add_item_spinner3);
+        back = findViewById(R.id.add_item_cancel);
+        submit = findViewById(R.id.add_item_button);
     }
 
     void setUpSPinner()
@@ -45,5 +57,10 @@ public class AddItem extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         type.setAdapter(dataAdapter);
         type.setSelection(0);
+    }
+
+    void saveProduct()
+    {
+
     }
 }
