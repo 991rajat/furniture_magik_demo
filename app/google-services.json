@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "683025022604",
+    "firebase_url": "https://furniture-magik-demo.firebaseio.com",
+    "project_id": "furniture-magik-demo",
+    "storage_bucket": "furniture-magik-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683025022604:android:fe678287e4640242c6c5a9",
+        "android_client_info": {
+          "package_name": "android.example.furniture_magik_demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683025022604-h6u4bh937qm27bgkiiqr3a0a7dagerat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx8khpORDjWiEQYjAbrH0PqocmNZWeY-E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683025022604-h6u4bh937qm27bgkiiqr3a0a7dagerat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
