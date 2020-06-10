@@ -73,53 +73,37 @@ public class OtpVerification extends AppCompatActivity {
             }
         });
 
-
+        /** Callback for Phone Auth */
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 Log.d(TAG, "onVerificationCompleted:" + credential);
+                Toast.makeText(OtpVerification.this, "Got It, Verifying", Toast.LENGTH_SHORT).show();
                 signInWithPhoneAuthCredential(credential);
 
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                // This callback is invoked in an invalid request for verification is made,
-                // for instance if the the phone number format is not valid.
                 progressBarUnset();
-                Toast.makeText(OtpVerification.this, "Wrong OTP", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpVerification.this, "Failed to get", Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "onVerificationFailed", e);
 
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    // ...
                 } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // ...
+                    Toast.makeText(OtpVerification.this, "Too Many Req", Toast.LENGTH_SHORT).show();
                 }
-
-                // Show a message and update the UI
-                // ...
             }
 
             @Override
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
-                // The SMS verification code has been sent to the provided phone number, we
-                // now need to ask the user to enter the code and then construct a credential
-                // by combining the code with a verification ID.
                 progressBarUnset();
                 Log.d(TAG, "onCodeSent:" + verificationId);
-
-                Toast.makeText(OtpVerification.this, "Enter the OTP", Toast.LENGTH_SHORT).show();
-                // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
+                Toast.makeText(OtpVerification.this, "Got It, Verifying", Toast.LENGTH_SHORT).show();
                 submitToken = true;
-                //mResendToken = token;
-
-
-                // ...
             }
         };
 
@@ -139,6 +123,7 @@ public class OtpVerification extends AppCompatActivity {
         count = findViewById(R.id.count);
 
     }
+    /** Verify Phone Number init method */
     public void verifyPhoneNumber(String phoneNumber)
     {
         countDown();
@@ -160,6 +145,7 @@ public class OtpVerification extends AppCompatActivity {
         verifyPhoneNumber("+91"+mobile);
     }
 
+    /** If User submit otp */
     void submitVerification()
     {
         if(!otptext.getText().toString().isEmpty()&&submitToken) {
@@ -174,7 +160,7 @@ public class OtpVerification extends AppCompatActivity {
     }
 
 
-
+    /** Sign IN */
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         mAuth.signInWithCredential(credential)
@@ -184,7 +170,7 @@ public class OtpVerification extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            progressBarUnset();
+                            Toast.makeText(OtpVerification.this, "Welcome", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = task.getResult().getUser();
                             UserVerified();
                             // ...
@@ -202,8 +188,10 @@ public class OtpVerification extends AppCompatActivity {
 
     }
 
+    /** Navigate to main screen */
     public void UserVerified()
     {
+        progressBarUnset();
         SharedPref_Util.setString(this,"UID","9918385660");
         SharedPref_Util.setBoolean(this,"USER_PRESENT",true);
         Intent intent = new Intent(OtpVerification.this, MainActivity.class);
@@ -223,6 +211,7 @@ public class OtpVerification extends AppCompatActivity {
         progressDialog.dismiss();
     }
 
+    /** Count Down timer 60 sec */
     public void countDown()
     {
         count.setVisibility(View.VISIBLE);

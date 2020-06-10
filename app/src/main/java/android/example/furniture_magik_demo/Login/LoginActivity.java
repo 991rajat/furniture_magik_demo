@@ -17,9 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
 
-    EditText editText;
-    Button submit;
-    FirebaseAuth mAuth;
+    private EditText editText;
+    private Button submit;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /** Navigate to OTP */
     void otpVerification()
     {
         if(editText.getText().toString().length()!=0)

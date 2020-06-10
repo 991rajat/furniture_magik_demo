@@ -34,15 +34,15 @@ import java.util.List;
 public class AddItem extends AppCompatActivity {
 
     private static final String TAG = ">>>>>>>>>>";
-    Toolbar toolbar;
-    EditText name,price,discountprice;
-    Spinner type;
-    Button back,submit;
-    ImageView imageView;
+    private Toolbar toolbar;
+    private EditText name,price,discountprice;
+    private Spinner type;
+    private Button back,submit;
+    private ImageView imageView;
     boolean image_selected = false;
     private static final int PERMISSION_CODE = 101;
     private String image_path;
-    ProductHelper dbHelper;
+    private ProductHelper dbHelper;
     ProgressDialog progressDialog;
 
     @Override
@@ -110,6 +110,7 @@ public class AddItem extends AppCompatActivity {
         submit = findViewById(R.id.add_item_button);
     }
 
+    /** Spinner view */
     void setUpSPinner()
     {
         List<String> categories = new ArrayList<String>();
@@ -122,6 +123,8 @@ public class AddItem extends AppCompatActivity {
         type.setSelection(0);
     }
 
+
+    /** Save Product in DB*/
     void saveProduct()
     {
         String p_name = name.getText().toString().trim();
@@ -186,7 +189,7 @@ public class AddItem extends AppCompatActivity {
     }
 
 
-
+    /** Get Image Path */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -204,6 +207,7 @@ public class AddItem extends AppCompatActivity {
         }
     }
 
+    /** Permissions */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_CODE)  {

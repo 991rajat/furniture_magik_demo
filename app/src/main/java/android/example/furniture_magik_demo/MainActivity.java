@@ -25,12 +25,12 @@ import com.google.firebase.auth.FirebaseAuth;
 public class MainActivity extends AppCompatActivity {
 
 
-    FirebaseAuth mAuth;
-    Toolbar toolbar;
-    FloatingActionButton actionButton;
-    RecyclerView recyclerView;
-    ProductHelper dbHelper;
-    ProductAdapter adapter;
+    private FirebaseAuth mAuth;
+    private Toolbar toolbar;
+    private FloatingActionButton actionButton;
+    private RecyclerView recyclerView;
+    private ProductHelper dbHelper;
+    private ProductAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    /** Log Out*/
     private void logOut() {
         mAuth.signOut();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -88,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /** Populate Recycler View */
     private void populaterecyclerView() {
         dbHelper = new ProductHelper(this);
         adapter = new ProductAdapter(dbHelper.productList(), this, recyclerView);
@@ -97,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        /** session */
         if(mAuth.getCurrentUser()==null)
         {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
 //        }
 
+        /** Swipe to delete */
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT) {
 
             @Override

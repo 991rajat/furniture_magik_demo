@@ -32,6 +32,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
 
+    /** Create view  */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,6 +42,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return vh;
     }
 
+    /** Binder SetUP */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Product product = mProductList.get(position);
@@ -68,6 +70,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         mProductList.remove(position);
         notifyItemRemoved(position);
     }
+
+    /** Populate Holder Class */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView productname;
         public TextView type;

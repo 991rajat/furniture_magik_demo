@@ -25,11 +25,12 @@ public class ProductHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PRODUCT_DISCOUNT_PRICE = "discount_price";
     public static final String COLUMN_PRODUCT_IMAGE = "image";
 
-
+    /** DB CLASS */
     public ProductHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /** DB CREATE */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(" CREATE TABLE " + TABLE_NAME + " (" +
@@ -48,6 +49,7 @@ public class ProductHelper extends SQLiteOpenHelper {
         this.onCreate(sqLiteDatabase);
     }
 
+    /** DB SAVE */
     public boolean saveNewProduct(Product product, Context context) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -72,6 +74,7 @@ public class ProductHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /** DB DELETE */
     public void deleteProductRecord(long id, Context context) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -80,12 +83,14 @@ public class ProductHelper extends SQLiteOpenHelper {
 
     }
 
+    /** DB UPDATE */
     public void updateProductRecord(long productId, Context context, Product updatedProduct) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE  "+TABLE_NAME+" SET name ='"+ updatedProduct.getName() + "', type ='" + updatedProduct.getType()+ "', price ='"+ updatedProduct.getPrice() + "', discount_price ='"+ updatedProduct.getDiscount_price() + "', image ='"+ updatedProduct.getImage() + "'  WHERE _id='" + productId + "'");
         Toast.makeText(context, "Updated successfully.", Toast.LENGTH_SHORT).show();
     }
 
+    /** DB POPULATE RECYCLERVIEW */
     public List<Product> productList() {
         String query = "SELECT  * FROM " + TABLE_NAME;
 
