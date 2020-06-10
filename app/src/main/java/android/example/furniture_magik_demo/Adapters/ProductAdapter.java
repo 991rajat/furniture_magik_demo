@@ -4,6 +4,7 @@ import android.content.Context;
 import android.example.furniture_magik_demo.Model.Product;
 import android.example.furniture_magik_demo.R;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +44,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Product product = mProductList.get(position);
-        holder.productname.setText(product.getName());
-        holder.type.setText(product.getType());
-        holder.price.setText("Rs."+String.valueOf(product.getPrice()));
-        holder.discount.setText("Rs."+String.valueOf(product.getDiscount_price()));
+        holder.productname.setText(product.getName()+"  ");
+        holder.type.setText(product.getType()+"  ");
+        holder.price.setText("Rs."+String.valueOf(product.getDiscount_price())+"  ");
+        holder.discount.setText("Rs."+String.valueOf(product.getPrice())+"  ");
         holder.discount.setPaintFlags(holder.discount.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        if(!product.getName().equals(""))
-            Picasso.get().load(product.getImage()).placeholder(R.drawable.noproduct).into(holder.image);
-        else
-            holder.image.setImageDrawable(mContext.getDrawable(R.drawable.noproduct));
+        Log.d(">>>", "onBindViewHolder: "+product.getImage());
+        Picasso.get().load(new File(product.getImage())).placeholder(mContext.getDrawable(R.drawable.noproduct)).into(holder.image);
+        holder.itemView.setTag(product.getId());
     }
 
     @Override
@@ -59,9 +59,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return mProductList.size();
     }
 
-    public void add(int position, Product product) {
-        mProductList.add(position, product);
-        notifyItemInserted(position);
+    public void add( Product product) {
+        mProductList.add(mProductList.size(), product);
+        notifyItemInserted(mProductList.size());
     }
 
     public void remove(int position) {
@@ -85,7 +85,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             price = v.findViewById(R.id.productPrice);
             discount = v.findViewById(R.id.productDiscount);
             image = v.findViewById(R.id.productImage);
-            delete = v.findViewById(R.id.productDelete);
+            //delete = v.findViewById(R.id.productDelete);
 
         }
     }

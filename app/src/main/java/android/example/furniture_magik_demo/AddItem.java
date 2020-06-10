@@ -155,6 +155,12 @@ public class AddItem extends AppCompatActivity {
             allOk = false;
         }
 
+        if(p_discount > p_price)
+        {
+            Toast.makeText(this, "Discount price is higher than price.", Toast.LENGTH_SHORT).show();
+            allOk = false;
+        }
+
         if(!image_selected)
             image_path="";
 
@@ -170,6 +176,7 @@ public class AddItem extends AppCompatActivity {
             name.setText("");
             price.setText("");
             discountprice.setText("");
+            imageView.setImageDrawable(getDrawable(R.drawable.add_image));
         }
 
     }
@@ -188,6 +195,7 @@ public class AddItem extends AppCompatActivity {
                 Uri resultUri = result.getUri();
                 Log.d(TAG, "onActivityResult: "+resultUri.getPath());
                 image_path = resultUri.getPath();
+                imageView.setImageURI(resultUri);
                 image_selected = true;
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

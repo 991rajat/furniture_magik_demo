@@ -2,6 +2,7 @@ package android.example.furniture_magik_demo.Login;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.example.furniture_magik_demo.MainActivity;
 import android.example.furniture_magik_demo.R;
 import android.example.furniture_magik_demo.utils.SharedPref_Util;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
@@ -38,20 +41,25 @@ public class OtpVerification extends AppCompatActivity {
 
 
     private static final String TAG = "OtpVerification";
-    TextView textView;
-    Button button;
-    EditText otptext;
-    ProgressDialog progressDialog;
+    private TextView textView,count;
+    private Button button;
+    private EditText otptext;
+    private ProgressDialog progressDialog;
     private boolean Authsuccess;
     private String mobile;
     private String mVerificationId;
     private boolean submitToken;
-    FirebaseAuth mAuth;
+    private Toolbar toolbar;
+    private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
+        toolbar = findViewById(R.id.otp_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setViews();
         mobile = getIntent().getStringExtra("mobile");
         Log.d(TAG, "onCreate: "+mobile);
@@ -115,17 +123,27 @@ public class OtpVerification extends AppCompatActivity {
             }
         };
 
+        count.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              verifyPhoneNumber("+91"+mobile);
+            }
+        });
+
     }
 
     private void setViews() {
         otptext = findViewById(R.id.activity_otp_OTP);
         button = findViewById(R.id.activity_otp_button);
         textView = findViewById(R.id.activity_otp_mobile);
+        count = findViewById(R.id.count);
 
     }
     public void verifyPhoneNumber(String phoneNumber)
     {
+        countDown();
         progressBarSet("Trying to auto detect");
+
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 phoneNumber,        // Phone number to verify
                 60,                 // Timeout duration
@@ -203,6 +221,23 @@ public class OtpVerification extends AppCompatActivity {
     void progressBarUnset()
     {
         progressDialog.dismiss();
+    }
+
+    public void countDown()
+    {
+        count.setVisibility(View.VISIBLE);
+        if(count.getText().toString().equals("Retry!")) {
+
+            CountDownTimer countDownTimer = new CountDownTimer(60000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    count.setText(String.format(Locale.getDefault(), "%d sec.", millisUntilFinished / 1000L));
+                }
+
+                public void onFinish() {
+                    count.setText("Retry!");
+                }
+            }.start();
+        }
     }
 
 }
